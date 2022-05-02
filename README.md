@@ -41,7 +41,7 @@
 
 This script will automatically run through a list of Google searches, in order to automate Google Dorks for pen testing engagements.
 
-[![Google Dorking Screen Shot][screenshot]](https://github.com/LukeLauterbach/Google-Dorking-Automation/blob/main/Images/Example.png)
+![Script Screenshot](https://github.com/LukeLauterbach/Google-Dorking-Automation/blob/main/Images/Example.png)
 
 ### Built With
 
