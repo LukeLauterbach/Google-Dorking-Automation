@@ -5,7 +5,6 @@ import requests
 import sys
 import csv
 
-
 # ---------------#
 # API Keys       #
 # ---------------#
@@ -15,8 +14,8 @@ import csv
 #   look prettier for a report, you can add keys directly into the code here. If you are using multiple API keys,
 #   they can be appended to the keyList variable.
 keyList = []
-keyList.append("")
 SEARCH_ENGINE_ID = ""  # Your Engine ID. New ID can be generated https://programmablesearchengine.google.com/about/
+
 
 # ---------------#
 # FUNCTIONS      #
@@ -132,10 +131,13 @@ for index, argument in enumerate(sys.argv[1:]):
             domain = argument
         print(sys.argv[index])
 
-# Error condition if no API Key or Search Engine ID has been imported.
+# If no API keys or config file specified, see if there's a config file in the local directory. Else error.
 if not keyList or not SEARCH_ENGINE_ID:
-    print(f"{bColors.FAIL}ERROR - No API keys defined. Read the help documentation for more information.")
-    exit()
+    try:
+        SEARCH_ENGINE_ID, keyList = read_config_file('GoogleDorking.config')
+    except:
+        print(f"{bColors.FAIL}ERROR - No API keys defined. Read the help documentation for more information.")
+        exit()
 
 keyNumber = 0
 keyMax = len(keyList)
@@ -166,11 +168,11 @@ with open(dorkListFile, 'rt') as csvfile:  # Open dork list file
                 formattedDork = ''
 
                 if companyIndicator in dork and companyMode is False:
-                    if debugMode is True:
+                    if verboseMode is True:
                         print("Skipping dork because no company name was specified.")
                         searchSuccess = True
                 else:
-                    if debugMode == True and rowNumber == 2:
+                    if debugMode is True and rowNumber == 2:
                         print("")
                         print(f"{bColors.OKCYAN}Google Dorking complete. {str(rowNumber - 1)} dorks attempted,"
                               f"{str(successCount)} succeeded.")
