@@ -128,7 +128,9 @@ for index, argument in enumerate(sys.argv[1:]):
     elif sys.argv[index] in {'-ak', '-c', '-cf', '-d', '-l', '-o', '-se', '-v'}:
         pass
     else:
-        domain = argument
+        if not domain:
+            domain = argument
+        print(sys.argv[index])
 
 # Error condition if no API Key or Search Engine ID has been imported.
 if not keyList or not SEARCH_ENGINE_ID:
