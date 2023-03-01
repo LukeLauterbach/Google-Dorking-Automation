@@ -125,7 +125,7 @@ for index, argument in enumerate(sys.argv[1:]):
     elif argument == "-c" or argument == "--company-name":
         companyName = sys.argv[index + 2]
         companyMode = True
-    elif sys.argv[index] == "-d" or sys.argv[index] == "-c":
+    elif sys.argv[index] in {'-ak', '-c', '-cf', '-d', '-l', '-o', '-se', '-v'}:
         pass
     else:
         domain = argument
