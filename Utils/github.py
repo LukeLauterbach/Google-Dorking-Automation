@@ -1,5 +1,6 @@
 import requests
 from time import sleep
+from rich.console import Console
 
 def github_search(github_token, url, query, per_page=30, page=1):
     # Search parameters
@@ -63,7 +64,7 @@ def github(github_token, company, domain, silent_mode=False):
     if not github_token:
         return
     if not silent_mode:
-        print(f"\n{Colors.OKCYAN}Searching GitHub...{Colors.ENDC}")
+        Console().print("\nSearching GitHub...", style="cyan")
 
     code_search_url = 'https://api.github.com/search/code'
     commits_search_url = 'https://api.github.com/search/commits'
