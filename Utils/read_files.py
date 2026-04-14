@@ -1,3 +1,4 @@
+import csv
 import os
 
 def read_config_file(l_config_filename, github_token=''):
@@ -23,7 +24,7 @@ def read_config_file(l_config_filename, github_token=''):
 
 def format_domain_string(domain):
     if len(domain) == 1:
-        return f"site:{domain[0]}", f'"{domain[0]}"'
+        return f"site:{domain[0]}", domain[0]
 
 
     site_string = f"(site:{domain[0]}"
@@ -31,32 +32,42 @@ def format_domain_string(domain):
         site_string +=  f" OR site:{domain_string}"
     site_string += ")"
 
-    intext_string = f'("{domain[0]}"'
+    intext_string = f"({domain[0]}"
     for domain_string in domain[1:]:
-        intext_string += f' OR "{domain_string}"'
-    intext_string += ')'
+        intext_string += f" OR {domain_string}"
+    intext_string += ")"
 
     return site_string, intext_string
 
 def read_dork_file(dorkfile="", company="", domains=None, verbose_mode=False):
-    domain_site_string, domain_intext_string = format_domain_string(domains)
+    if domains:
+        domain_site_string, domain_intext_string = format_domain_string(domains)
+    else:
+        domain_site_string, domain_intext_string = "", ""
 
     if not dorkfile:
         dorkfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ListOfDorks.csv")
     dork_list = []
-    with open(dorkfile, 'r') as file:
-        next(file)  # Skip the header row
-        for line in file:
-            line = line.rstrip()
-            line = line.split(",")
-            if company:
-                line[0] = line[0].replace("{company}", company)
-            elif "{company}" in line[0]:
+    with open(dorkfile, "r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            dork_text = (row.get("Dork Name") or row.get("Dork") or "").strip()
+            description = (row.get("Description") or row.get(" Description") or "").strip()
+            owner = (row.get("Who Added") or row.get(" Who Added") or row.get("Owner") or "").strip()
+
+            if not dork_text:
                 continue
+
+            if company:
+                dork_text = dork_text.replace("{company}", company)
+            elif "{company}" in dork_text:
+                continue
+
             if domains:
-                line[0] = line[0].replace("site:{domain}", domain_site_string)
-                line[0] = line[0].replace("{domain}", domain_intext_string)
-            dork_list.append({'Dork': line[0], 'Description': line[1], 'Owner': line[2]})
+                dork_text = dork_text.replace("site:{domain}", domain_site_string)
+                dork_text = dork_text.replace("{domain}", domain_intext_string)
+
+            dork_list.append({"Dork": dork_text, "Description": description, "Owner": owner})
 
     if verbose_mode:
         print(f"Dorks Read From File: {len(dork_list)}")

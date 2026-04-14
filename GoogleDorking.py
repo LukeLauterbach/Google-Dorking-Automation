@@ -37,7 +37,7 @@ def format_dork(unformatted_dork):
     return formatted_dork
 
 
-def main(company="", domain="", debug_mode=False, dork_file="", quiet_mode=False, verbose_mode=False,
+def main(company="", domain=None, debug_mode=False, dork_file="", quiet_mode=False, verbose_mode=False,
          search_engine_id="", api_keys="", config_file="", github_token=""):
     if not company and not domain:
         (company, domain, debug_mode, list_of_dorks, quiet_mode, verbose_mode,
