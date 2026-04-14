@@ -60,9 +60,10 @@ def main(company="", domain=None, debug_mode=False, dork_file="", quiet_mode=Fal
     if not api_keys or not search_engine_id:
         console.print(
             Panel(
-                f"[bold red]No API keys or search engine ID found. Please specify them in the config file or as arguments.[/]",
+                "[bold red]Error[/][white] - No API keys or search engine ID found. "
+                "Please specify them in the config file or as arguments.[/white]",
                 title="Error",
-                border_style="red"
+                border_style="white"
             )
         )
         sys.exit(1)
@@ -93,11 +94,11 @@ def main(company="", domain=None, debug_mode=False, dork_file="", quiet_mode=Fal
 
             if search_items:  # True if there were any results
                 link = search_items[0].get("link")
-                console.print(f"[bold green]Success![/] - {unformatted_dork['Dork']}")
+                console.print(f"[bold green]Success[/][white] - {unformatted_dork['Dork']}[/white]")
                 valid_results += 1
             else:
                 if quiet_mode is False:
-                    console.print(f"Failure - {unformatted_dork['Dork']}")
+                    console.print(f"[bold red]Failure[/][white] - {unformatted_dork['Dork']}[/white]")
 
             if debug_mode:
                 sys.exit()
@@ -107,8 +108,8 @@ def main(company="", domain=None, debug_mode=False, dork_file="", quiet_mode=Fal
 
         if not search_complete:
             console.print(
-                f"[red]Error![/] - All {len(api_keys)} API keys exhausted. "
-                f"Wait until tomorrow or create more Google Custom search keys."
+                f"[bold red]Error[/][white] - All {len(api_keys)} API keys exhausted. "
+                f"Wait until tomorrow or create more Google Custom search keys.[/white]"
             )
             break
 
