@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "google-dorking-automation"
-version = "0.1.0"
+version = "2.0"
 requires-python = ">=3.10"
 dependencies = [
-    "requests>=2.33.1",
-    "rich>=15.0.0",
+    "requests",
+    "rich,
 ]
 
 [project.scripts]
